@@ -24,23 +24,18 @@ public class MailServiceTest {
     private TemplateEngine templateEngine;
 
     @Test
-    public void testSayHello() {
-        mailService.sayHello();
-    }
-
-    @Test
     public void testSendSimpleMail() {
-        mailService.sendTextMail("yananhuazai@163.com","闫安华仔发来的邮件","呼呼呼,别睡了,起来学习啦");
+//        mailService.sendTextMail("yananhuazai@163.com","闫安华仔发来的邮件","呼呼呼,别睡了,起来学习啦");
     }
 
     @Test
     public void testSendHtmlMail() {
-        mailService.sendHtmlMail("yananhuazai@163.com","华仔发来的html邮件","<h1>华仔爱学习</h1>");
+//        mailService.sendHtmlMail("yananhuazai@163.com","华仔发来的html邮件","<h1>华仔爱学习</h1>");
     }
 
     @Test
     public void testSendAttaMail() throws Exception {
-        mailService.sendAttaMail("yananhuazai@163.com","华仔发来的一封附件邮件","<h1>华仔总是这么爱学习</h1>","D:\\Users\\huazai\\Desktop\\JavaTest.zip");
+//        mailService.sendAttaMail("yananhuazai@163.com","华仔发来的一封附件邮件","<h1>华仔总是这么爱学习</h1>","D:\\Users\\huazai\\Desktop\\JavaTest.zip");
 //        mailService.sendAttaMail("yananhuazai@163.com","华仔发来的一封附件邮件","<h1>华仔总是这么爱学习</h1>","D:\\Users\\huazai\\Desktop\\Java中数据类型.png");
     }
 
@@ -56,9 +51,8 @@ public class MailServiceTest {
     public void testSendTemplateMail() throws Exception {
         Context context = new Context();
         context.setVariable("id","666");
-
         String emailContent = templateEngine.process("emailTemplate",context);
-        mailService.sendHtmlMail("yananhuazai@163.com","呼呼呼,这是一个模板页面",emailContent);
+//        mailService.sendHtmlMail("yananhuazai@163.com","呼呼呼,这是一个模板页面",emailContent);
     }
 
     @Test

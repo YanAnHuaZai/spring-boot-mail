@@ -1,5 +1,8 @@
 package cn.yananhuazai.sprintbootmail.service;
 
+import cn.yananhuazai.sprintbootmail.model.Email;
+import cn.yananhuazai.sprintbootmail.model.EmailResponse;
+import cn.yananhuazai.sprintbootmail.util.EmptyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
@@ -13,7 +16,6 @@ import org.thymeleaf.context.Context;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.File;
-import java.io.UnsupportedEncodingException;
 
 /**
  * 功能描述:
@@ -32,23 +34,49 @@ public class MailService {
     @Autowired
     private JavaMailSender javaMailSender;
 
-    public void sayHello() {
-        System.out.println("Hello World");
+    @Autowired
+    private TemplateEngine templateEngine;
+
+    /**
+     * 发送邮件
+     * @author YanAnHuaZai
+     * create 2018年09月06日10:52:25
+     * @param email 邮件对象
+     * @return 邮件响应信息
+     */
+    public EmailResponse sendEmail(Email email) {
+        if (EmptyUtil.isNotEmpty(email) && EmptyUtil.isNotEmpty(email.getTo()) && (EmptyUtil.isNotEmpty(email.getContent()) || EmptyUtil.isNotEmpty(email.getThymeleaf())) && EmptyUtil.isNotEmpty(email.getSubject())) {
+            if (email.getIsText()) { //发送普通文本文件
+                sendTextMail(email);
+            } else {
+                if (EmptyUtil.isNotEmpty(email.getThymeleaf())) { //使用模板
+                    Context context = new Context();
+                    if (EmptyUtil.isNotEmpty(email.getMap())) //使用模板是否有参数 有参数 就带入
+                        context.setVariables(email.getMap());
+                    String emailContent = templateEngine.process(email.getThymeleaf(), context);
+                    if (EmptyUtil.isEmpty(emailContent))
+                        return new EmailResponse(-1, "不存在此邮件模板");
+                }
+                sendHtmlMail(email); //发送邮件
+            }
+        }
+        return new EmailResponse(-1,"邮件信息填写不完整");
     }
 
     /**
      * 发送文本邮件
      * @author YanAnHuaZai
      * create 2018年09月04日15:10:24
-     * @param to 发送给谁
-     * @param subject 标题
-     * @param content 内容
+     * @param email 邮件对象
+     *   to 发送给谁
+     *   subject 标题
+     *   content 内容
      */
-    public void sendTextMail(String to,String subject,String content) {
+    private void sendTextMail(Email email) {
         SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-        simpleMailMessage.setTo(to);
-        simpleMailMessage.setSubject(subject);
-        simpleMailMessage.setText(content);
+        simpleMailMessage.setTo(email.getTo());
+        simpleMailMessage.setSubject(email.getSubject());
+        simpleMailMessage.setText(email.getContent());
         simpleMailMessage.setFrom(from);
         javaMailSender.send(simpleMailMessage); //发送邮件
     }
@@ -57,19 +85,20 @@ public class MailService {
      * 发送html邮件
      * @author YanAnHuaZai
      * create 2018年09月04日15:11:09
-     * @param to 发送给谁
-     * @param subject 标题
-     * @param content html格式内容
+     * @param email 邮件对象
+     *   to 发送给谁
+     *   subject 标题
+     *   content html格式内容
      */
-    public void sendHtmlMail(String to,String subject,String content) {
+    private void sendHtmlMail(Email email) {
         MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper helper;
         try {
             helper = new MimeMessageHelper(message,true);
-            helper.setTo(to);
+            helper.setTo(email.getTo());
             helper.setFrom(from);
-            helper.setSubject(subject);
-            helper.setText(content,true);
+            helper.setSubject(email.getSubject());
+            helper.setText(email.getContent(),true);
             javaMailSender.send(message);
         } catch (MessagingException e) {
             e.printStackTrace();
