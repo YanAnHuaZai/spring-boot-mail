@@ -1,0 +1,29 @@
+textarea {
+	width: 100%;
+	color: #474a55;
+	background-color: #474A55;
+	font-size: 16px;
+	border: 0;
+	color: #858282;
+	padding: 5px 3px;
+	margin: 50px 3px;
+}
+
+.clear_button {
+  font-size: 20px;
+  font-weight: 300;
+  color: #fff;
+  cursor: pointer;
+  outline: none;
+  padding: 17px 5px;
+  width:22%;
+  border:3px solid #FF4D15;
+  background: #FF4D15;
+  border-radius: 0.3em;
+  -o-border-radius: 0.3em;
+  -webkit-border-radius: 0.3em;
+  -moz-border-radius: 0.3em;
+}
+input,button,select,textarea{outline:none}
+textarea{resize:none}
+/*input:-webkit-autofill {-webkit-box-shadow: 0 0 0px 1000px #858282 inset;border: 1px solid white!important;}*/
