@@ -1,4 +1,4 @@
-package cn.yananhuazai.sprintbootmail.model;
+package cn.yananhuazai.sprintbootmail.model.bo;
 
 import java.util.Map;
 import java.util.Objects;

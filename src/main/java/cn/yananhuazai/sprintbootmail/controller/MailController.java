@@ -1,7 +1,11 @@
 package cn.yananhuazai.sprintbootmail.controller;
 
-import cn.yananhuazai.sprintbootmail.model.Email;
-import cn.yananhuazai.sprintbootmail.model.EmailResponse;
+import cn.yananhuazai.sprintbootmail.dao.EmailSendRecordDao;
+import cn.yananhuazai.sprintbootmail.dao.SimpleEmailDao;
+import cn.yananhuazai.sprintbootmail.model.TEmailSendRecord;
+import cn.yananhuazai.sprintbootmail.model.TSimpleEmail;
+import cn.yananhuazai.sprintbootmail.model.bo.Email;
+import cn.yananhuazai.sprintbootmail.model.bo.EmailResponse;
 import cn.yananhuazai.sprintbootmail.service.MailService;
 import cn.yananhuazai.sprintbootmail.util.IpUtil;
 import org.springframework.beans.factory.annotation.Autowired;

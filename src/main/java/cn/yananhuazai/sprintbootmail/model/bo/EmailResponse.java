@@ -1,4 +1,4 @@
-package cn.yananhuazai.sprintbootmail.model;
+package cn.yananhuazai.sprintbootmail.model.bo;
 
 /**
  * 功能描述:
@@ -11,6 +11,10 @@ public class EmailResponse {
     private Object obj;
 
     public EmailResponse() {
+    }
+
+    public EmailResponse(Integer code) {
+        this.code = code;
     }
 
     public EmailResponse(Integer code, String msg) {

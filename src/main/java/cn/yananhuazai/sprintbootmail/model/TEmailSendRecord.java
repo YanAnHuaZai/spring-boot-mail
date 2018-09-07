@@ -1,15 +1,21 @@
 package cn.yananhuazai.sprintbootmail.model;
 
+import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.*;
+
 /**
  * 功能描述: 邮件发送记录实体类
  * author: YanAnHuaZai
  * create: 2018-09-06 22:36
  **/
+@Entity
+@Table(name = "t_email_send_record")
 public class TEmailSendRecord {
     private String oid;
-    private String from;
-    private String to;
-    private String subject;
+    private String from_;
+    private String to_;
+    private String subject_;
     private String content;
     private String cityCode;
     private String address;
@@ -21,25 +27,29 @@ public class TEmailSendRecord {
     public TEmailSendRecord() {
     }
 
-    public TEmailSendRecord(String from, String to, String subject, String content, Integer errorCode) {
-        this.from = from;
-        this.to = to;
-        this.subject = subject;
+    public TEmailSendRecord(String from_, String to_, String subject_, String content, Integer errorCode) {
+        this.from_ = from_;
+        this.to_ = to_;
+        this.subject_ = subject_;
         this.content = content;
         this.errorCode = errorCode;
     }
 
-    public TEmailSendRecord(String oid, String from, String to, String subject, String content, String cityCode, String address, Integer errorCode) {
+    public TEmailSendRecord(String oid, String from_, String to_, String subject_, String content, String cityCode, String address, Integer errorCode) {
         this.oid = oid;
-        this.from = from;
-        this.to = to;
-        this.subject = subject;
+        this.from_ = from_;
+        this.to_ = to_;
+        this.subject_ = subject_;
         this.content = content;
         this.cityCode = cityCode;
         this.address = address;
         this.errorCode = errorCode;
     }
 
+    @Id
+    @Column(name = "oid")
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid")
     public String getOid() {
         return oid;
     }
@@ -48,30 +58,34 @@ public class TEmailSendRecord {
         this.oid = oid;
     }
 
+    @Column(name = "from_")
     public String getFrom() {
-        return from;
+        return from_;
     }
 
-    public void setFrom(String from) {
-        this.from = from;
+    public void setFrom(String from_) {
+        this.from_ = from_;
     }
 
+    @Column(name = "to_")
     public String getTo() {
-        return to;
+        return to_;
     }
 
-    public void setTo(String to) {
-        this.to = to;
+    public void setTo(String to_) {
+        this.to_ = to_;
     }
 
+    @Column(name = "subject_")
     public String getSubject() {
-        return subject;
+        return subject_;
     }
 
-    public void setSubject(String subject) {
-        this.subject = subject;
+    public void setSubject(String subject_) {
+        this.subject_ = subject_;
     }
 
+    @Column(name = "content")
     public String getContent() {
         return content;
     }
@@ -80,6 +94,7 @@ public class TEmailSendRecord {
         this.content = content;
     }
 
+    @Column(name = "city_code")
     public String getCityCode() {
         return cityCode;
     }
@@ -88,6 +103,7 @@ public class TEmailSendRecord {
         this.cityCode = cityCode;
     }
 
+    @Column(name = "address")
     public String getAddress() {
         return address;
     }
@@ -96,6 +112,7 @@ public class TEmailSendRecord {
         this.address = address;
     }
 
+    @Column(name = "error_code")
     public Integer getErrorCode() {
         return errorCode;
     }
@@ -104,6 +121,7 @@ public class TEmailSendRecord {
         this.errorCode = errorCode;
     }
 
+    @Column(name = "flag1")
     public String getFlag1() {
         return flag1;
     }
@@ -112,6 +130,7 @@ public class TEmailSendRecord {
         this.flag1 = flag1;
     }
 
+    @Column(name = "flag2")
     public String getFlag2() {
         return flag2;
     }
@@ -120,6 +139,7 @@ public class TEmailSendRecord {
         this.flag2 = flag2;
     }
 
+    @Column(name = "flag3")
     public String getFlag3() {
         return flag3;
     }

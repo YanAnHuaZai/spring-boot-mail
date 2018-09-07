@@ -1,5 +1,6 @@
 package cn.yananhuazai.sprintbootmail.service;
 
+import cn.yananhuazai.sprintbootmail.dao.EmailSendRecordDao;
 import cn.yananhuazai.sprintbootmail.model.TEmailSendRecord;
 import cn.yananhuazai.sprintbootmail.model.thirdpart.TaoBaoIpData;
 import cn.yananhuazai.sprintbootmail.model.thirdpart.TaoBaoIpEnum;
@@ -7,6 +8,7 @@ import cn.yananhuazai.sprintbootmail.model.thirdpart.TaoBaoIpModel;
 import cn.yananhuazai.sprintbootmail.util.ConnectorUtil;
 import cn.yananhuazai.sprintbootmail.util.EmptyUtil;
 import net.sf.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -19,6 +21,9 @@ import java.util.Map;
  **/
 @Service
 public class EmailSendRecordService {
+
+    @Autowired
+    private EmailSendRecordDao emailSendRecordDao;
 
     /**
      * 保存最初期的简单的邮件的内容
@@ -37,6 +42,8 @@ public class EmailSendRecordService {
             emailSendRecord.setCityCode(map.get(TaoBaoIpEnum.CITY_CODE));
             emailSendRecord.setAddress(map.get(TaoBaoIpEnum.ADDRESS));
         }
+        emailSendRecordDao.save(emailSendRecord);
+        System.out.println(emailSendRecord.getOid());
     }
 
     /**

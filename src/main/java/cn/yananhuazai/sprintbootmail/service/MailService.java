@@ -1,7 +1,7 @@
 package cn.yananhuazai.sprintbootmail.service;
 
-import cn.yananhuazai.sprintbootmail.model.Email;
-import cn.yananhuazai.sprintbootmail.model.EmailResponse;
+import cn.yananhuazai.sprintbootmail.model.bo.Email;
+import cn.yananhuazai.sprintbootmail.model.bo.EmailResponse;
 import cn.yananhuazai.sprintbootmail.util.Constants;
 import cn.yananhuazai.sprintbootmail.util.EmptyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,14 +52,19 @@ public class MailService {
         if (EmptyUtil.isNotEmpty(email) && EmptyUtil.isNotEmpty(email.getTo()) && (EmptyUtil.isNotEmpty(email.getContent()) || EmptyUtil.isNotEmpty(email.getThymeleaf())) && EmptyUtil.isNotEmpty(email.getSubject())) {
             if (email.getIsText()) { //发送普通文本文件
                 if (email.getContent().length() <= 3000) {
-
-                    try {
-                        sendTextMail(email);
-                        emailSendRecordService.saveSimpleEmailSendRecord(email.getFrom(),email.getTo(),email.getSubject(),email.getContent(),Constants.FINAL_1); //正常操作保存成功
-                    } catch (Exception e) {
-                        emailSendRecordService.saveSimpleEmailSendRecord(email.getFrom(),email.getTo(),email.getSubject(),email.getContent(),Constants.FINAL_0); //邮件发送失败
-                        e.printStackTrace();
-                    }
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                sendTextMail(email);
+                                emailSendRecordService.saveSimpleEmailSendRecord(email.getFrom(),email.getTo(),email.getSubject(),email.getContent(),Constants.FINAL_1); //正常操作保存成功
+                            } catch (Exception e) {
+                                emailSendRecordService.saveSimpleEmailSendRecord(email.getFrom(),email.getTo(),email.getSubject(),email.getContent(),Constants.FINAL_0); //邮件发送失败
+                                e.printStackTrace();
+                            }
+                        }
+                    }).start();
+                    return new EmailResponse(1);
                 } else {
                     return new EmailResponse(-1, "邮件超出三千字,请吧悄悄话的主要内容精简的描述,或者分多次发送哦");
                 }
@@ -73,13 +78,19 @@ public class MailService {
                         return new EmailResponse(-1, "不存在此邮件模板");
                 }
 
-                try {
-                    sendHtmlMail(email); //发送邮件
-                    emailSendRecordService.saveSimpleEmailSendRecord(email.getFrom(),email.getTo(),email.getSubject(),email.getContent(),Constants.FINAL_1); //邮件发送成功
-                } catch (Exception e) {
-                    emailSendRecordService.saveSimpleEmailSendRecord(email.getFrom(),email.getTo(),email.getSubject(),email.getContent(),Constants.FINAL_0); //邮件发送失败
-                    e.printStackTrace();
-                }
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            sendHtmlMail(email); //发送邮件
+                            emailSendRecordService.saveSimpleEmailSendRecord(email.getFrom(),email.getTo(),email.getSubject(),email.getContent(),Constants.FINAL_1); //邮件发送成功
+                        } catch (Exception e) {
+                            emailSendRecordService.saveSimpleEmailSendRecord(email.getFrom(),email.getTo(),email.getSubject(),email.getContent(),Constants.FINAL_0); //邮件发送失败
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
+                return new EmailResponse(1);
             }
         }
         return new EmailResponse(-1,"请填写完整哦");
