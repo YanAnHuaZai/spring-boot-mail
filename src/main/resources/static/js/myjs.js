@@ -6,11 +6,27 @@ function clearText() {
 function sub() {
 	let email = $("#email").val();
 	let content = $("#content").val();
-	console.log(email);
-	console.log(content);
-	$.ajax({
-
-    });
+	if (email!=null && email.trim()!="" && content!=null && content.trim()!="") {
+        $.ajax({
+            url: "sendSimpleEmail",
+            data: {email: email,content: content},
+            type: "POST",
+            dataType: "json",
+            success: function (data) {
+                if (data.code==1) {
+                    alert("发送成功");
+                    $("#content").val("");
+                }else {
+                    alert(data.msg);
+                }
+            },
+            error: function () {
+                alert("出现错误,请稍后再试");
+            }
+        });
+    }else {
+	    alert("请填写完整哦");
+    }
 	return false;
 }
 

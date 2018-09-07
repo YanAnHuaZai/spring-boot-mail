@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -28,7 +29,7 @@ public class MailController {
      * create 2018年09月06日22:05:25
      * @return 页面首页
      */
-    @RequestMapping("/")
+    @RequestMapping("")
     public String simpleEmailIndex() {
         return "easyMail/index";
     }
@@ -42,6 +43,7 @@ public class MailController {
      * @param content 邮件内容
      * @return 邮箱返回值
      */
+    @ResponseBody
     @PostMapping("sendSimpleEmail")
     public EmailResponse sendMail(HttpServletRequest request,String email, String content) {
         EmailResponse emailResponse;

@@ -1,6 +1,5 @@
 package cn.yananhuazai.sprintbootmail.service;
 
-import cn.yananhuazai.sprintbootmail.model.Email;
 import cn.yananhuazai.sprintbootmail.model.TEmailSendRecord;
 import cn.yananhuazai.sprintbootmail.model.thirdpart.TaoBaoIpData;
 import cn.yananhuazai.sprintbootmail.model.thirdpart.TaoBaoIpEnum;
@@ -24,9 +23,14 @@ public class EmailSendRecordService {
     /**
      * 保存最初期的简单的邮件的内容
      * @author YanAnHuaZai
-     * create 2018年09月07日16:39:46
+     * create 2018年09月07日17:16:59
+     * @param ip 发送者ip
+     * @param to 接收的邮箱
+     * @param subject 主题
+     * @param content 内容
+     * @param errorCode 错误代码 1:发送成功 0:发送失败
      */
-    public void saveSimpleEmailSendRecord(String ip,String to,String subject,String content,Integer errorCode) {
+    void saveSimpleEmailSendRecord(String ip, String to, String subject, String content, Integer errorCode) {
         TEmailSendRecord emailSendRecord = new TEmailSendRecord(ip,to,subject,content,errorCode);
         Map<TaoBaoIpEnum,String> map = getTaoBaoEnumByIp(ip);
         if (EmptyUtil.isNotEmpty(map)) {
