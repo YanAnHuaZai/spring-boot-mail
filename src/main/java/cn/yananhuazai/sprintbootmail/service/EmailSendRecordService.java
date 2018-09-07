@@ -1,5 +1,7 @@
 package cn.yananhuazai.sprintbootmail.service;
 
+import cn.yananhuazai.sprintbootmail.model.Email;
+import cn.yananhuazai.sprintbootmail.model.TEmailSendRecord;
 import cn.yananhuazai.sprintbootmail.model.thirdpart.TaoBaoIpData;
 import cn.yananhuazai.sprintbootmail.model.thirdpart.TaoBaoIpEnum;
 import cn.yananhuazai.sprintbootmail.model.thirdpart.TaoBaoIpModel;
@@ -19,7 +21,19 @@ import java.util.Map;
 @Service
 public class EmailSendRecordService {
 
-    //saveEmailSendRecord
+    /**
+     * 保存最初期的简单的邮件的内容
+     * @author YanAnHuaZai
+     * create 2018年09月07日16:39:46
+     */
+    public void saveSimpleEmailSendRecord(String ip,String to,String subject,String content,Integer errorCode) {
+        TEmailSendRecord emailSendRecord = new TEmailSendRecord(ip,to,subject,content,errorCode);
+        Map<TaoBaoIpEnum,String> map = getTaoBaoEnumByIp(ip);
+        if (EmptyUtil.isNotEmpty(map)) {
+            emailSendRecord.setCityCode(map.get(TaoBaoIpEnum.CITY_CODE));
+            emailSendRecord.setAddress(map.get(TaoBaoIpEnum.ADDRESS));
+        }
+    }
 
     /**
      * 通过ip获取ip和城市,通过淘宝的api
@@ -28,7 +42,7 @@ public class EmailSendRecordService {
      * @param ip ip
      * @return 带有此ip属于的城市code和拼接地址
      */
-    public Map<TaoBaoIpEnum,String> getTaoBaoEnumByIp(String ip) {
+    private Map<TaoBaoIpEnum,String> getTaoBaoEnumByIp(String ip) {
         Map<TaoBaoIpEnum,String> map = new HashMap<>();
         if (EmptyUtil.isEmpty(ip))
             return null;

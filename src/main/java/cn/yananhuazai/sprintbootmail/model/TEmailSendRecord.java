@@ -21,6 +21,14 @@ public class TEmailSendRecord {
     public TEmailSendRecord() {
     }
 
+    public TEmailSendRecord(String from, String to, String subject, String content, Integer errorCode) {
+        this.from = from;
+        this.to = to;
+        this.subject = subject;
+        this.content = content;
+        this.errorCode = errorCode;
+    }
+
     public TEmailSendRecord(String oid, String from, String to, String subject, String content, String cityCode, String address, Integer errorCode) {
         this.oid = oid;
         this.from = from;
